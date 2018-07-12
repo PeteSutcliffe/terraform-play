@@ -2,11 +2,25 @@ provider "aws" {
   region = "${var.region}"
 }
 
+data "template_file" "user_data" {
+  template = "${file("app.tpl")}"
+}
+
 resource "aws_instance" "example" {
   ami                    = "${lookup(var.amis, var.region)}"
   instance_type          = "t2.micro"
   vpc_security_group_ids = ["${aws_security_group.allow_http.id}"]
   key_name               = "PeteKP"
+  user_data              = "${data.template_file.user_data.rendered}"
+
+  #provisioner "remote-exec" {
+  #  inline = [
+  #    "sudo yum update -y",
+  #    "sudo yum install httpd -y",
+  #    "sudo service start httpd",
+  #    "echo 'Hello' >> /var/www/index.html",
+  #  ]
+  #}
 }
 
 #resource "aws_eip" "ip" {
