@@ -12,3 +12,14 @@ variable "amis" {
     "eu-west-2"      = "ami-b8b45ddf"
   }
 }
+
+variable "availabilityZones" {
+  type = "map"
+
+  default = {
+    "us-east-1"      = ["us-east-1a", "us-east-1b"]
+    "us-west-2"      = ["us-west-2a", "us-west-2b"]
+    "ap-northeast-1" = ["ap-northeast-1a", "ap-northeast-1b"]
+    "eu-west-2"      = ["eu-west-2a", "eu-west-2b"]
+  }
+}
