@@ -9,26 +9,22 @@ data "template_file" "user_data" {
 resource "aws_instance" "example" {
   ami                    = "${lookup(var.amis, var.region)}"
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.allow_http.id}"]
+  vpc_security_group_ids = ["${aws_security_group.pete_sg.id}"]
   key_name               = "PeteKP"
   user_data              = "${data.template_file.user_data.rendered}"
+  iam_instance_profile   = "${aws_iam_instance_profile.pete_test_profile.name}"
 
-  #provisioner "remote-exec" {
-  #  inline = [
-  #    "sudo yum update -y",
-  #    "sudo yum install httpd -y",
-  #    "sudo service start httpd",
-  #    "echo 'Hello' >> /var/www/index.html",
-  #  ]
-  #}
+  tags {
+    Owner = "Pete"
+  }
 }
 
 #resource "aws_eip" "ip" {
 #  instance = "${aws_instance.example.id}"
 #}
 
-resource "aws_security_group" "allow_http" {
-  name        = "allow_http"
+resource "aws_security_group" "pete_sg" {
+  name        = "pete_sg"
   description = "Allow inbound http traffic"
 
   ingress {
