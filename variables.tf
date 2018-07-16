@@ -2,6 +2,10 @@ variable "region" {
   default = "eu-west-2"
 }
 
+variable "vpc_id" {
+  default = "vpc-6ec66f07"
+}
+
 variable "amis" {
   type = "map"
 
